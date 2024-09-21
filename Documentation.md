@@ -57,3 +57,9 @@ A TarefaModel representa uma tarefa no sistema e será mapeada para a tabela tb_
 - **@Id e @GeneratedValue(strategy = GenerationType.AUTO)**: Marca o campo ``tarefaId`` como chave primária e indica que seu valor será gerado automaticamente.
 - **tarefaId**: Identificador único do tipo ``UUID``, gerado automaticamente.
 - **tarefaCorpo**: Um campo String que contém o conteúdo da tarefa.
+
+### Interface TarefaRepository
+A interface ``TarefaRepository`` é responsável pela conexão com o JPA (Java Persistence API) e facilita as operações de persistência da entidade TarefaModel. Ao estender a interface ``JpaRepository``, ela herda métodos prontos para realizar operações de CRUD, como salvar, buscar, atualizar e deletar tarefas.
+
+### Tarefa Record DTO
+O ``TarefaDTO`` (Data Transfer Object) é um record que serve para transferir dados entre a camada de controle (``Controller``) e outras partes da aplicação, ele encapsula as informações necessárias para representar uma tarefa, facilitando a comunicação entre os componentes.
