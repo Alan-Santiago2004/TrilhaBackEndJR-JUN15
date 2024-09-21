@@ -47,3 +47,13 @@ Neste projeto, optei, a princípio, por utilizar o H2 Database, um banco de dado
 
 O H2 facilita o teste da API sem complicações. No entanto, em um ambiente de produção, deve ser substituído por um banco de dados mais robusto, como PostgreSQL ou MySQL, para garantir a persistência dos dados.
 As configurações do banco de dados se emcontram em  `src.resources.application.properties`.
+
+### Creiação da entidade Model
+
+Essa entidade foi criada para facilitar as operações de CRUD no sistema de tarefas. O campo tarefaId é gerado automaticamente para garantir a unicidade das tarefas, e tarefaCorpo armazena a descrição da tarefa.
+A TarefaModel representa uma tarefa no sistema e será mapeada para a tabela tb_tarefa no banco de dados.
+- **@Entity**: Define que a classe é uma entidade JPA, ou seja, será mapeada para uma tabela no banco de dados.
+- **@Table(name = "tb_tarefa")**: Define explicitamente o nome da tabela no banco de dados como ``tb_tarefa``.
+- **@Id e @GeneratedValue(strategy = GenerationType.AUTO)**: Marca o campo ``tarefaId`` como chave primária e indica que seu valor será gerado automaticamente.
+- **tarefaId**: Identificador único do tipo ``UUID``, gerado automaticamente.
+- **tarefaCorpo**: Um campo String que contém o conteúdo da tarefa.
