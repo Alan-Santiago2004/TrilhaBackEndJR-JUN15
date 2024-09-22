@@ -63,3 +63,17 @@ A interface ``TarefaRepository`` é responsável pela conexão com o JPA (Java P
 
 ### Tarefa Record DTO
 O ``TarefaDTO`` (Data Transfer Object) é um record que serve para transferir dados entre a camada de controle (``Controller``) e outras partes da aplicação, ele encapsula as informações necessárias para representar uma tarefa, facilitando a comunicação entre os componentes.
+
+### Tarefa Controller
+O TarefaController é responsável por expor os endpoints da API e implementar as operações CRUD (Create, Read, Update e Delete) para gerenciar as tarefas. Os principais métodos HTTP foram utilizados para definir essas operações.
+
+- **POST**: Utilizado no método ``criarTarefa()``, que recebe um TarefaDTO como parâmetro e salva a tarefa no banco de dados. Esse endpoint permite a criação de novas tarefas, utilizando o método HTTP POST.
+
+- **GET**: Utilizado em dois métodos:
+
+    - ``listarTarefas()``: Retorna uma lista de todas as tarefas cadastradas no banco de dados.
+    - ``selecionarTarefa()``: Retorna uma tarefa específica, identificada pelo id, que é passado como parâmetro na URL do endpoint.
+
+- **PUT**: O método ``atualizarTarefa()`` é responsável por atualizar uma tarefa existente. Ele recebe o id da tarefa a ser atualizada e um ``TarefaDTO`` com os novos dados. A atualização é feita utilizando o método HTTP PUT.
+
+- **DELETE**: O método ``deletarTarefa()`` utiliza o método HTTP DELETE para excluir uma tarefa com base no id passado como parâmetro na URL. Ele localiza a tarefa pelo id e a remove do banco de dados.
