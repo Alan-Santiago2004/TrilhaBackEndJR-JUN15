@@ -46,7 +46,7 @@ Neste projeto, optei, a princípio, por utilizar o H2 Database, um banco de dado
 - Execução em Memória: Ideal para desenvolvimento e testes, as informações são armazenadas temporariamente enquanto a aplicação está em execução.
 
 O H2 facilita o teste da API sem complicações. No entanto, em um ambiente de produção, deve ser substituído por um banco de dados mais robusto, como PostgreSQL ou MySQL, para garantir a persistência dos dados.
-As configurações do banco de dados se emcontram em  `src.resources.application.properties`.
+As configurações do banco de dados se emcontram em  `src.main.resources.application.properties`.
 
 ### Creiação da entidade Model
 
