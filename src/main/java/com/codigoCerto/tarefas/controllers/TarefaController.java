@@ -34,15 +34,21 @@ public class TarefaController {
     }
 
     @GetMapping("/tarefa/{id}")
-    public ResponseEntity<TarefaModel> selecionarTarefa(@PathVariable(value = "id")UUID uuid){
+    public ResponseEntity<Object> selecionarTarefa(@PathVariable(value = "id")UUID uuid){
         Optional<TarefaModel> tarefa = tarefaRepository.findById(uuid);
+        if(tarefa.isEmpty()){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("tarefa not found");
+        }
         return ResponseEntity.status(HttpStatus.OK).body(tarefa.get());
     }
 
     @PutMapping("/tarefa/{id}")
-    public ResponseEntity<TarefaModel> atualizarTarefa(@PathVariable(value = "id")UUID uuid,
+    public ResponseEntity<Object> atualizarTarefa(@PathVariable(value = "id")UUID uuid,
                                                     @RequestBody @Valid TarefaDTO tarefaDTO){
         Optional<TarefaModel> tarefa = tarefaRepository.findById(uuid);
+        if(tarefa.isEmpty()){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("tarefa not found");
+        }
         TarefaModel novaTarefa = tarefa.get();
         BeanUtils.copyProperties(tarefaDTO,novaTarefa);
         return ResponseEntity.status(HttpStatus.OK).body(tarefaRepository.save(novaTarefa));
@@ -51,6 +57,9 @@ public class TarefaController {
     @DeleteMapping("/tarefa/{id}")
     public ResponseEntity<Object> DeletarTarefa(@PathVariable(value = "id")UUID uuid){
         Optional<TarefaModel> tarefa = tarefaRepository.findById(uuid);
+        if(tarefa.isEmpty()){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("tarefa not found");
+        }
         tarefaRepository.delete(tarefa.get());
         return ResponseEntity.status(HttpStatus.OK).body("tarefa deletada");
     }
