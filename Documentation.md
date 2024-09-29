@@ -1,6 +1,7 @@
 # Trilha Inicial BackEnd Jr
 
-API REST que gerencia tarefas, com funções de CRUD com autenticação de usuarios
+API REST que gerencia tarefas, com funções de CRUD com autenticação de usuarios 
+
 
 ## Requisitos
 
@@ -26,7 +27,7 @@ API REST que gerencia tarefas, com funções de CRUD com autenticação de usuar
     ```bash
     mvn spring-boot:run
 
-# Desenvolvimento
+# Desenvolvimento 
 ### configuração inicial do projeto
 Este projeto foi desenvolvido utilizando Java com o framework Spring Boot, que facilita a criação de APIs REST. O Spring Boot permite iniciar o desenvolvimento rapidamente, com uma configuração mínima, além de fornecer uma estrutura robusta e escalável.
 
@@ -37,6 +38,7 @@ As dependências principais utilizadas no projeto foram adicionadas no arquivo `
 - Spring Data JPA: Facilita a integração com bancos de dados relacionais, permitindo o uso do JPA para operações de persistência.
 - H2 Database: Configura o uso do H2 Database, um banco de dados em memória, para simplificar os testes e o desenvolvimento local.
 - Spring Security: Adiciona autenticação e controle de acesso à API, permitindo proteger os endpoints da aplicação.
+- JSON Web Token: Um token JWT (JSON Web Token) é um formato compactado e seguro de transmitir informações entre partes como um objeto JSON.
 
 ### Configuração do banco de dados
 
@@ -46,7 +48,7 @@ Neste projeto, optei, a princípio, por utilizar o H2 Database, um banco de dado
 - Execução em Memória: Ideal para desenvolvimento e testes, as informações são armazenadas temporariamente enquanto a aplicação está em execução.
 
 O H2 facilita o teste da API sem complicações. No entanto, em um ambiente de produção, deve ser substituído por um banco de dados mais robusto, como PostgreSQL ou MySQL, para garantir a persistência dos dados.
-As configurações do banco de dados se emcontram em  `src.main.resources.application.properties`.
+As configurações do banco de dados se emcontram em  `src.resources.application.properties`.
 
 ### Creiação da entidade Model
 
@@ -72,8 +74,26 @@ O TarefaController é responsável por expor os endpoints da API e implementar a
 - **GET**: Utilizado em dois métodos:
 
     - ``listarTarefas()``: Retorna uma lista de todas as tarefas cadastradas no banco de dados.
-    - ``selecionarTarefa()``: Retorna uma tarefa específica, identificada pelo id, que é passado como parâmetro na URL do endpoint.
+    - ``selecionarTarefa()``: Retorna uma tarefa específica, identificada pelo id, que é passado como parâmetro na URL do endpoint, caso não encontre nada, retornará um erro ``404 Not_Found``.
 
-- **PUT**: O método ``atualizarTarefa()`` é responsável por atualizar uma tarefa existente. Ele recebe o id da tarefa a ser atualizada e um ``TarefaDTO`` com os novos dados. A atualização é feita utilizando o método HTTP PUT.
+- **PUT**: O método ``atualizarTarefa()`` é responsável por atualizar uma tarefa existente. Ele recebe o id da tarefa a ser atualizada e um ``TarefaDTO`` com os novos dados, caso não encontre nada, retornará um erro ``404 Not_Found``. A atualização é feita utilizando o método HTTP PUT.
 
-- **DELETE**: O método ``deletarTarefa()`` utiliza o método HTTP DELETE para excluir uma tarefa com base no id passado como parâmetro na URL. Ele localiza a tarefa pelo id e a remove do banco de dados.
+- **DELETE**: O método ``deletarTarefa()`` utiliza o método HTTP DELETE para excluir uma tarefa com base no id passado como parâmetro na URL, caso não encontre nada, retornará um erro ``404 Not_Found``. Ele localiza a tarefa pelo id e a remove do banco de dados.
+
+# Autenticação
+### Criação da entidade User
+A entidade UserModel representa um usuário no sistema e implementa a interface ``UserDetails``, que é fundamental para a integração com o Spring Security. Os atributos desta entidade incluem:
+
+- **id** (tipo ``String``, gerado automaticamente como ``UUID`` com as anotações ``@Id`` e ``@GeneratedValue``): Um identificador único para cada usuário.
+- **login** (tipo ``String``): O nome de usuário, que é utilizado para autenticação.
+- **password** (tipo ``String``): A senha do usuário, armazenada de forma segura.
+- **role** (tipo ``RoleUser``, um enum): Representa o papel do usuário no sistema, definindo suas permissões.
+A classe implementa os métodos da interface ``UserDetails``, incluindo ``getAuthorities()``, que retorna uma lista de autoridades associadas ao usuário; ``getPassword()``, que retorna a senha; e ``getUsername()``, que retorna o nome do usuário. Além disso, os métodos ``isAccountNonExpired``, ``isAccountNonLocked``, ``isCredentialsNonExpired`` e ``isEnabled`` são implementados para retornar true, indicando que a conta do usuário está ativa e válida.
+
+### Criação do UserRepository
+O UserRepository é uma interface que estende o JpaRepository, permitindo a interação com o banco de dados de forma eficiente. Nesta interface, foi criado o método findByLogin(String login), que busca um usuário com base no nome de usuário fornecido. Esse método retorna um objeto do tipo UserDetails, permitindo que a autenticação e a autorização sejam realizadas facilmente pelo Spring Security.
+
+### Criação AuthenticationService
+O AuthenticationService é uma classe que implementa a interface UserDetailsService, que é crucial para o processo de autenticação no Spring Security. Esta classe contém o método loadUserByUsername(String username), que busca um usuário no banco de dados com base no nome de usuário fornecido. Se o usuário for encontrado, o método retorna um objeto do tipo UserDetails, que inclui as informações de autenticação necessárias. Caso contrário, uma exceção é lançada, garantindo que apenas usuários válidos possam ser autenticados no sistema.
+
+### Pasta Security
