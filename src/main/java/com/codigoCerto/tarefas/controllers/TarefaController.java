@@ -37,7 +37,7 @@ public class TarefaController {
     public ResponseEntity<Object> selecionarTarefa(@PathVariable(value = "id")UUID uuid){
         Optional<TarefaModel> tarefa = tarefaRepository.findById(uuid);
         if(tarefa.isEmpty()){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("tarefa not found");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("tarefa não encontrada");
         }
         return ResponseEntity.status(HttpStatus.OK).body(tarefa.get());
     }
@@ -47,7 +47,7 @@ public class TarefaController {
                                                     @RequestBody @Valid TarefaDTO tarefaDTO){
         Optional<TarefaModel> tarefa = tarefaRepository.findById(uuid);
         if(tarefa.isEmpty()){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("tarefa not found");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("tarefa não encontrada");
         }
         TarefaModel novaTarefa = tarefa.get();
         BeanUtils.copyProperties(tarefaDTO,novaTarefa);
@@ -58,7 +58,7 @@ public class TarefaController {
     public ResponseEntity<Object> DeletarTarefa(@PathVariable(value = "id")UUID uuid){
         Optional<TarefaModel> tarefa = tarefaRepository.findById(uuid);
         if(tarefa.isEmpty()){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("tarefa not found");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("tarefa não encontrada");
         }
         tarefaRepository.delete(tarefa.get());
         return ResponseEntity.status(HttpStatus.OK).body("tarefa deletada");
