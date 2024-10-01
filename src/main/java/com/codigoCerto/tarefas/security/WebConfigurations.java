@@ -13,8 +13,11 @@ public class WebConfigurations implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins("*")
+                .allowedOrigins(
+                        "https://trilhabackendjr-jun15-production-1e59.up.railway.app",
+                        "http://localhost:8080"
+                )
                 .allowCredentials(true)
-                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS");
+                .allowedMethods("*");
     }
 }
