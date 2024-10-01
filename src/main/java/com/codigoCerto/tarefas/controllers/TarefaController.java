@@ -15,6 +15,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @RestController
+@CrossOrigin(origins = "*")
 public class TarefaController {
     @Autowired
     private TarefaRepository tarefaRepository;
