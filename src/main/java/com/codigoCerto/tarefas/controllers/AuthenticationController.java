@@ -5,7 +5,9 @@ import com.codigoCerto.tarefas.dtos.LoginResponseDTO;
 import com.codigoCerto.tarefas.dtos.RegisterDTO;
 import com.codigoCerto.tarefas.models.UserModel;
 import com.codigoCerto.tarefas.repositories.UserRepository;
+import com.codigoCerto.tarefas.security.SecurityConfigurations;
 import com.codigoCerto.tarefas.security.TokenService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth")
+@SecurityRequirement(name = SecurityConfigurations.SECURITY)
 public class AuthenticationController {
     @Autowired
     AuthenticationManager authenticationManager;
