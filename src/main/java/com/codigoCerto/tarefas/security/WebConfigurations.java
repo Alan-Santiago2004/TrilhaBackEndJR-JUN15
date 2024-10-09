@@ -15,7 +15,8 @@ public class WebConfigurations implements WebMvcConfigurer {
         registry.addMapping("/**")
                 .allowedOrigins(
                         "https://trilhabackendjr-jun15-production-1e59.up.railway.app",
-                        "http://localhost:8080"
+                        "http://localhost:8080",
+                        "https://trilhabackendjr-jun15-production-1e59.up.railway.app/swagger-ui/index.html#/**"
                 )
                 .allowCredentials(true)
                 .allowedMethods("*");
