@@ -19,5 +19,6 @@ public class SwaggerConfig {
                         .version("v1"))
                 // Adicione o servidor correto com HTTPS
                 .addServersItem(new Server().url(appUrl));
+
     }
 }
