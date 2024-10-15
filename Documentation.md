@@ -80,3 +80,8 @@ O token deve ser copiado e inserido no campo **Authorize** no Swagger para assim
     ```bash
     mvn spring-boot:run
 
+## Tecnologias utilizadas
+- Spring Framework
+- SQLite
+- Maven
+- JWT (JSON Web Token)
