@@ -1,19 +1,72 @@
 # Trilha Inicial BackEnd Jr
 
-API REST que gerencia tarefas, com funções de CRUD com autenticação de usuarios 
+A API de Tarefas com Autenticação de Usuários é projetada para gerenciar tarefas com funcionalidades completas de CRUD (Create, Read, Update, Delete), além de autenticação e controle de acesso com base em roles de usuários. Os usuários podem se registrar como USER ou ADMIN, onde cada um tem permissões específicas: usuários do tipo USER podem visualizar tarefas e consultar informações de outros usuários, enquanto usuários com a role ADMIN têm controle total sobre as tarefas, podendo criar, editar e excluir, além de consultar dados de usuários. A autenticação é feita via JWT, garantindo segurança no acesso às operações protegidas da API.
 
+## Swagger
+[Interface interativa com Swagger](https://trilhabackendjr-jun15-production-1e59.up.railway.app/swagger-ui/index.html#/)
 
-## Requisitos
+Para registrar um usuário na API, envie uma requisição ``POST`` para o endpoint ``/auth/register`` com o seguinte corpo:
+```    
+    {
+        "login": "String",
+        "password": "String",
+        "role": "USER" // ou "ADMIN"
+    }
+```
+Após registrar, faça login enviando uma requisição ``POST`` para ``/auth/login`` com o corpo:
+```    
+    {
+        "login": "String",
+        "password": "String"
+    }
+```
+A resposta retornará um token JWT que deve ser usado para autenticar as demais requisições.
+```
+    {
+        "token": "..."
+    }
+```
+O token deve ser copiado e inserido no campo **Authorize** no Swagger para assim permitir que as requisições nos endpoints tarefa e user sejam realizadas.
+
+## Endpoints
+- ``/auth/register`` - Registrar Usuário
+
+    - Método: ``POST``
+    - Descrição: Registra um novo usuário no sistema com a role USER ou ADMIN.
+    - Acesso: Público (não requer autenticação).
+
+- ``/auth/login`` - Autenticar Usuário
+
+    - Método: ``POST``
+    - Descrição: Realiza o login do usuário e retorna um token JWT para autenticação nas demais requisições.
+    - Acesso: Público (não requer autenticação).
+
+- ``/tarefa`` - Gerenciamento de Tarefas (CRUD)
+
+    - Métodos:
+        - ``GET``: Lista todas as tarefas (acesso para USER e ADMIN).
+        - ``POST``: Cria uma nova tarefa (acesso apenas para ADMIN).
+        - ``PUT``: Atualiza uma tarefa existente (acesso apenas para ADMIN).
+        - ``DELETE``: Remove uma tarefa (acesso apenas para ADMIN).
+    - Acesso: Requer autenticação com token JWT.
+
+- ``/user`` - Informações de Usuários
+
+    - Método: ``GET``
+    - Descrição: Retorna informações dos usuários cadastrados.
+    - Acesso: Disponível para USER e ADMIN. Requer autenticação com token JWT.
+
+## Rodar Localmente
 
 - **Java 21**: [Instalar JDK 21](https://www.oracle.com/br/java/technologies/downloads/)
 - **Maven**: [Instalar Maven](https://maven.apache.org/install.html)
 
-## Configuração do Ambiente
+### Configuração do Ambiente
 
 1. **Configurar Java 21**: Verifique se a JDK está devidamente instalado com o comando `java -version`.
 2. **Configurar Maven**: Verifique se o Maven está devidamente instalado com o comando `mvn -version`.
 
-## Rodar o Projeto
+### Rodar o Projeto
 
 1. Clone o repositório:
    ```bash
@@ -27,7 +80,7 @@ API REST que gerencia tarefas, com funções de CRUD com autenticação de usuar
     ```bash
     mvn spring-boot:run
 
-# Desenvolvimento 
+# Desenvolvimento
 ### configuração inicial do projeto
 Este projeto foi desenvolvido utilizando Java com o framework Spring Boot, que facilita a criação de APIs REST. O Spring Boot permite iniciar o desenvolvimento rapidamente, com uma configuração mínima, além de fornecer uma estrutura robusta e escalável.
 
@@ -88,7 +141,7 @@ A entidade UserModel representa um usuário no sistema e implementa a interface 
 - **login** (tipo ``String``): O nome de usuário, que é utilizado para autenticação.
 - **password** (tipo ``String``): A senha do usuário, armazenada de forma segura.
 - **role** (tipo ``RoleUser``, um enum): Representa o papel do usuário no sistema, definindo suas permissões.
-A classe implementa os métodos da interface ``UserDetails``, incluindo ``getAuthorities()``, que retorna uma lista de autoridades associadas ao usuário; ``getPassword()``, que retorna a senha; e ``getUsername()``, que retorna o nome do usuário. Além disso, os métodos ``isAccountNonExpired``, ``isAccountNonLocked``, ``isCredentialsNonExpired`` e ``isEnabled`` são implementados para retornar true, indicando que a conta do usuário está ativa e válida.
+  A classe implementa os métodos da interface ``UserDetails``, incluindo ``getAuthorities()``, que retorna uma lista de autoridades associadas ao usuário; ``getPassword()``, que retorna a senha; e ``getUsername()``, que retorna o nome do usuário. Além disso, os métodos ``isAccountNonExpired``, ``isAccountNonLocked``, ``isCredentialsNonExpired`` e ``isEnabled`` são implementados para retornar true, indicando que a conta do usuário está ativa e válida.
 
 ### Criação do UserRepository
 O UserRepository é uma interface que estende o JpaRepository, permitindo a interação com o banco de dados de forma eficiente. Nesta interface, foi criado o método findByLogin(String login), que busca um usuário com base no nome de usuário fornecido. Esse método retorna um objeto do tipo UserDetails, permitindo que a autenticação e a autorização sejam realizadas facilmente pelo Spring Security.
